@@ -6,7 +6,6 @@ namespace Application.Commands.UserC.Commands;
 public record UserRegisterCommand(
     [Required] string UserName,
     [Required] string Email,
-    [Required] string Password,
-    [Required][DataType(DataType.Password)] string Role
+    [Required] [DataType(DataType.Password)] string Password
 ) : IRequest<string>;
 

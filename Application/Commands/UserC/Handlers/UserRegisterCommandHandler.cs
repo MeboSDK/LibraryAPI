@@ -6,7 +6,7 @@ using Application.Commands.UserC.Commands;
 using FluentValidation;
 
 namespace Application.Commands.UserC.Handlers;
-public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand,string>
+public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand, string>
 {
     private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +26,7 @@ public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand,st
 
     public async Task<string> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
     {
-        var user = new User { UserName = request.UserName, Email = request.Email};
+        var user = new User { UserName = request.UserName, Email = request.Email };
 
         var validationResult = await _userValidator.ValidateAsync(user);
 
@@ -36,11 +36,7 @@ public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand,st
         var result = await _userManager.CreateAsync(user, request.Password);
         if (result.Succeeded)
         {
-            if (!string.IsNullOrEmpty(request.Role))
-            {
-                await _userManager.AddToRoleAsync(user, request.Role);
-            }
-
+            await _userManager.AddToRoleAsync(user, "User");
             await _unitOfWork.CommitAsync();
             return await _tokenService.GenerateTokenAsync(user, await _userManager.GetRolesAsync(user));
         }
