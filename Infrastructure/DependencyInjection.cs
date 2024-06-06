@@ -15,6 +15,7 @@ using System.Security.Claims;
 using Domain.Abstractions;
 using Infrastructure.Data.Repositories;
 using Infrastructure.Data.Servicies.UnitOfWork;
+using Infrastructure.Token.Services;
 
 namespace Infrastructure
 {
@@ -29,6 +30,7 @@ namespace Infrastructure
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddAuthentication(options =>
             {
