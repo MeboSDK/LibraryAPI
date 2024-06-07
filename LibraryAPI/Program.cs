@@ -3,12 +3,13 @@ using Infrastructure;
 using Serilog;
 using Application;
 using Infrastructure.Data;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()

@@ -14,6 +14,7 @@ public record AddBookCommand(
     double Rate,
     string ImagePath,
     DateTime ReleaseDate,
+    List<int> AuthorsIds,
     [Required] int TotalCount,
     int CurrentCount) : IRequest;
 

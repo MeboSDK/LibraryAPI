@@ -21,7 +21,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPost("AddBook")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddBook([FromBody] AddBookCommand command)
         {
             if (!ModelState.IsValid)
@@ -41,7 +41,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPost("UpdateBook")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateBook([FromBody] UpdateBookCommand command)
         {
             if (!ModelState.IsValid)

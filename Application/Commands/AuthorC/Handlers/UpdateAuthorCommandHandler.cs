@@ -24,7 +24,7 @@ public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand>
         author.DateOfBirth = request.DateOfBirth;
         author.ModifyDate = DateTime.Now;
 
-        await _repository.UpdateAsync(author);
+        _repository.Update(author);
 
         await _unitOfWork.CommitAsync();
     }

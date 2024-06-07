@@ -14,6 +14,7 @@ public record UpdateBookCommand(
     string Descrption,
     double Rate,
     string ImagePath,
+    int[] AuthorsIds,
     DateTime ReleaseDate,
     [Required] int TotalCount,
     int CurrentCount) : IRequest;

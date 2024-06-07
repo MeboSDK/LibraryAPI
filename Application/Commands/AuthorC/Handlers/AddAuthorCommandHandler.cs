@@ -25,7 +25,7 @@ public class AddAuthorCommandHandler : IRequestHandler<AddAuthorCommand>
             InsertDate = DateTime.Now,
         };
 
-        await _authorRepository.AddAsync(book);
+        _authorRepository.Add(book);
 
         await _unitOfWork.CommitAsync();
     }

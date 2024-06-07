@@ -19,9 +19,19 @@ public class Repository<T> : IRepository<T> where T : Entity
         _dbSet = _dbContext.Set<T>();
     }
 
-    public virtual async Task AddAsync(T entity)
+    public virtual void Add(T entity)
     {
-        await _dbSet.AddAsync(entity);
+         _dbSet.Add(entity);
+    }
+
+    public void Remove(T entity)
+    {
+        _dbContext.Remove(entity);
+    }
+
+    public void Update(T entity)
+    {
+        _dbSet.Update(entity);
     }
     public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter = null)
     {
@@ -40,10 +50,5 @@ public class Repository<T> : IRepository<T> where T : Entity
         return await _dbSet.FindAsync(id);
     }
 
-    public Task UpdateAsync(T entity)
-    {
-        return Task.Run(() => { 
-            _dbSet.Update(entity);
-        });
-    }
+ 
 }
