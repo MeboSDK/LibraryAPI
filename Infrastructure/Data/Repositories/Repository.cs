@@ -40,4 +40,10 @@ public class Repository<T> : IRepository<T> where T : Entity
         return await _dbSet.FindAsync(id);
     }
 
+    public Task UpdateAsync(T entity)
+    {
+        return Task.Run(() => { 
+            _dbSet.Update(entity);
+        });
+    }
 }
