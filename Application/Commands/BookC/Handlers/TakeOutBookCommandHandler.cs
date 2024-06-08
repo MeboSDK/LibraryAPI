@@ -20,19 +20,32 @@ public class TakeOutBookCommandHandler : IRequestHandler<TakeOutBookCommand>
     }
     public async Task Handle(TakeOutBookCommand request, CancellationToken cancellationToken)
     {
-        UserBook userBook = new UserBook()
-        {
-            UserId = request.UsedId,
-            BookId = request.BookId,
-            BooksCount = request.Count
-        };
-
-        _userBookRepository.Add(userBook);
+        var records = await _userBookRepository.GetAllAsync(o => o.UserId == request.UsedId && o.BookId == request.BookId);
 
         var book = await _bookRepository.GetByIdAsync(request.BookId);
+        
         book.CurrentCount -= request.Count;
-
+        
         _bookRepository.Update(book);
+
+        if (!records.Any())
+        {
+            UserBook userBook = new UserBook()
+            {
+                UserId = request.UsedId,
+                BookId = request.BookId,
+                BooksCount = request.Count
+            };
+
+            _userBookRepository.Add(userBook);
+        }
+        else
+        {
+            var record = records.FirstOrDefault();
+            record.BooksCount += request.Count;
+            _userBookRepository.Update(record);
+        }
+
 
         await _unitOfWork.CommitAsync();
     }
