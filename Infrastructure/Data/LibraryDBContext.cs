@@ -20,15 +20,17 @@ public class LibraryDBContext : IdentityDbContext<User>
     public DbSet<Author> Authors { get; set; }
     public DbSet<BookAuthor> BooksAuthors { get; set; }
     public DbSet<UserBook> UsersBooks { get; set; }
-
+    public DbSet<BookImage> BookImages { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
+
         modelBuilder.ApplyConfiguration(new AuthorConfig());
         modelBuilder.ApplyConfiguration(new BookConfig());
         modelBuilder.ApplyConfiguration(new BookAuthorConfig());
         modelBuilder.ApplyConfiguration(new UserBookConfig());
+        modelBuilder.ApplyConfiguration(new BookImageConfig());
     }
 }

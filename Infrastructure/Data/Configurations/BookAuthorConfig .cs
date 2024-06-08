@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Configurations
 {
-    public class BookAuthorConfig : IEntityTypeConfiguration<BookAuthor>
+    internal class BookAuthorConfig : IEntityTypeConfiguration<BookAuthor>
     {
         public void Configure(EntityTypeBuilder<BookAuthor> builder)
         {

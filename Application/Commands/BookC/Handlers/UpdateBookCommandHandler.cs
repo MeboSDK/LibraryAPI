@@ -8,9 +8,10 @@ namespace Application.Commands.BookC.Handlers;
 public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand>
 {
     private readonly IRepository<Book> _bookRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IRepository<BookAuthor> _bookAuthorRepository;
     private readonly IRepository<Author> _authorRepository;
+    
+    private readonly IUnitOfWork _unitOfWork;
 
     public UpdateBookCommandHandler(IRepository<Book> bookRepository,
         IUnitOfWork unitOfWork,
@@ -31,13 +32,19 @@ public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand>
         book.CurrentCount = request.CurrentCount;
         book.TotalCount = request.TotalCount;
         book.ModifyDate = DateTime.Now;
-        book.ImagePath = request.ImagePath;
         book.Rate = request.Rate;
         book.ReleaseDate = request.ReleaseDate;
 
         _bookRepository.Update(book);
-        
-        var booksAuthors = await _bookAuthorRepository.GetAllAsync(o => o.BookId == book.Id);
+
+        await UpdateAuthorsInBookAsync(request);
+
+        await _unitOfWork.CommitAsync();
+    }
+
+    private async Task UpdateAuthorsInBookAsync(UpdateBookCommand request)
+    {
+        var booksAuthors = await _bookAuthorRepository.GetAllAsync(o => o.BookId == request.Id);
         var deleteableAuthorsIds = booksAuthors.Where(o => !request.AuthorsIds.Contains(o.AuthorId));
 
         for (int i = 0; i < deleteableAuthorsIds.Count(); i++)
@@ -52,12 +59,12 @@ public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand>
             BookAuthor bookAuthor = new()
             {
                 AuthorId = addableAuthors.ElementAt(i).Id,
-                BookId = book.Id
+                BookId = request.Id
             };
 
             _bookAuthorRepository.Add(bookAuthor);
         }
 
-        await _unitOfWork.CommitAsync();
     }
+
 }

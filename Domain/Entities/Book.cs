@@ -17,7 +17,6 @@ namespace Domain.Entities
         public string Title { get; set; }
         public string Descrption { get; set; }
         public double Rate { get; set; }
-        public string ImagePath { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int TotalCount { get; set; }
         public int CurrentCount { get; set; }
@@ -26,5 +25,6 @@ namespace Domain.Entities
         public DateTime? DeleteDate { get; set; }
         public virtual ICollection<BookAuthor> BookAuthors { get; set; }
         public virtual ICollection<UserBook> BookUsers { get; set; }
+        public virtual BookImage BookImage { get; set; }
     }
 }

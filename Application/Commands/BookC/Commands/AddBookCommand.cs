@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Commands.BookC.Commands.Records;
+using Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,9 +14,9 @@ public record AddBookCommand(
     [Required] string Title,
     string Descrption,
     double Rate,
-    string ImagePath,
     DateTime ReleaseDate,
     List<int> AuthorsIds,
     [Required] int TotalCount,
     int CurrentCount) : IRequest;
+
 

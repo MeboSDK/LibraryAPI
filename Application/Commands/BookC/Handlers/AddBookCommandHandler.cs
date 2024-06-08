@@ -10,22 +10,24 @@ public class AddBookCommandHandler : IRequestHandler<AddBookCommand>
     private readonly IRepository<Book> _bookRepository;
     private readonly IRepository<BookAuthor> _bookAuthorRepository;
     private readonly IRepository<Author> _authorRepository;
+    private readonly IRepository<BookImage> _imageRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public AddBookCommandHandler(IRepository<Book> bookRepository, 
         IRepository<BookAuthor> bookAuthorRepository,
         IRepository<Author> authorRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IRepository<BookImage> imageRepository)
     {
         _bookRepository = bookRepository;
         _unitOfWork = unitOfWork;
         _bookAuthorRepository = bookAuthorRepository;
         _authorRepository = authorRepository;
+        _imageRepository = imageRepository;
+
     }
     public async Task Handle(AddBookCommand request, CancellationToken cancellationToken)
     {
-        var authors = await _authorRepository.GetAllAsync(e => request.AuthorsIds.Contains(e.Id));
-
         Book book = new Book()
         {
             Title = request.Title,
@@ -33,7 +35,6 @@ public class AddBookCommandHandler : IRequestHandler<AddBookCommand>
             CurrentCount = request.CurrentCount,
             TotalCount = request.TotalCount,
             InsertDate = DateTime.Now,
-            ImagePath = request.ImagePath,
             Rate = request.Rate,
             ReleaseDate = request.ReleaseDate,
         };
@@ -42,18 +43,24 @@ public class AddBookCommandHandler : IRequestHandler<AddBookCommand>
 
         await _unitOfWork.CommitAsync();
 
+        await AddAuthorsInBookAsync(request,book.Id);
+
+        await _unitOfWork.CommitAsync();
+    }
+
+    private async Task AddAuthorsInBookAsync(AddBookCommand request, int bookId)
+    {
+        var authors = await _authorRepository.GetAllAsync(e => request.AuthorsIds.Contains(e.Id));
+
         for (int i = 0; i < authors.Count(); i++)
         {
             BookAuthor bookAuthor = new()
             {
                 AuthorId = authors.ElementAt(i).Id,
-                BookId = book.Id
+                BookId = bookId
             };
 
             _bookAuthorRepository.Add(bookAuthor);
         }
-
-        await _unitOfWork.CommitAsync();
-
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Application.Commands.BookC.Commands;
+using LibraryAPI.Models.BorrowModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LibraryAPI.Controllers
 {
@@ -20,14 +22,20 @@ namespace LibraryAPI.Controllers
 
         [HttpPost("takeoutbook")]
         [Authorize]
-        public async Task<IActionResult> TakeOutBook([FromBody] TakeOutBookCommand command)
+        public async Task<IActionResult> TakeOutBook([FromBody] TakeOutBookModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
             try
             {
+                TakeOutBookCommand command = new TakeOutBookCommand(userId, model.BookId, model.Count);
+                
                 await _mediator.Send(command);
+
                 return Ok();
             }
             catch (Exception ex)
@@ -44,7 +52,6 @@ namespace LibraryAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
             try
             {
                 await _mediator.Send(command);

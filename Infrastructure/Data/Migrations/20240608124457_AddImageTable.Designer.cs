@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Infrastructure
 {
     [DbContext(typeof(LibraryDBContext))]
-    partial class LibraryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240608124457_AddImageTable")]
+    partial class AddImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,6 +81,9 @@ namespace Infrastructure.Data.Infrastructure
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -137,9 +143,6 @@ namespace Infrastructure.Data.Infrastructure
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ContentType")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -155,9 +158,6 @@ namespace Infrastructure.Data.Infrastructure
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId")
-                        .IsUnique();
 
                     b.ToTable("Book_Images", (string)null);
                 });
@@ -409,15 +409,6 @@ namespace Infrastructure.Data.Infrastructure
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Domain.Entities.BookImage", b =>
-                {
-                    b.HasOne("Domain.Entities.Book", null)
-                        .WithOne("BookImage")
-                        .HasForeignKey("Domain.Entities.BookImage", "BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.UserBook", b =>
                 {
                     b.HasOne("Domain.Entities.Book", "Book")
@@ -498,9 +489,6 @@ namespace Infrastructure.Data.Infrastructure
             modelBuilder.Entity("Domain.Entities.Book", b =>
                 {
                     b.Navigation("BookAuthors");
-
-                    b.Navigation("BookImage")
-                        .IsRequired();
 
                     b.Navigation("BookUsers");
                 });

@@ -1,10 +1,6 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
+﻿using Application.Commands.BookC.Commands.Records;
+using MediatR;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Commands.BookC.Commands;
 
@@ -13,7 +9,6 @@ public record UpdateBookCommand(
     [Required] string Title,
     string Descrption,
     double Rate,
-    string ImagePath,
     int[] AuthorsIds,
     DateTime ReleaseDate,
     [Required] int TotalCount,
