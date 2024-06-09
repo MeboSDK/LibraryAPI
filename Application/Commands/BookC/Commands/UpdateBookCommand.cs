@@ -1,5 +1,4 @@
-﻿using Application.Commands.BookC.Commands.Records;
-using MediatR;
+﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Commands.BookC.Commands;

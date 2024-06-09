@@ -20,7 +20,7 @@ namespace LibraryAPI.Controllers
             _logger = logger;
         }
 
-        [HttpPost("takeoutbook")]
+        [HttpPost("take-out-book")]
         [Authorize]
         public async Task<IActionResult> TakeOutBook([FromBody] TakeOutBookModel model)
         {
@@ -46,7 +46,7 @@ namespace LibraryAPI.Controllers
 
         }
 
-        [HttpPost("returnbook")]
+        [HttpPost("return-book")]
         [Authorize]
         public async Task<IActionResult> ReturnBook([FromBody] ReturnBookCommand command)
         {

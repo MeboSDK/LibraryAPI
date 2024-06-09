@@ -18,9 +18,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\AuthorC\Validators\" />
-    <Folder Include="Commands\BookC\Validators\" />
-  </ItemGroup>
-
 </Project>

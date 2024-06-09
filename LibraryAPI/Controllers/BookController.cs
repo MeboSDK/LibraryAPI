@@ -1,4 +1,5 @@
 ﻿using Application.Commands.BookC.Commands;
+using Application.Commands.ImageC.Commands;
 using Application.Queries.BookQ.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,7 @@ namespace LibraryAPI.Controllers
             _logger = logger;
         }
 
-        [HttpPost("AddBook")]
+        [HttpPost("add-nook")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddBook([FromBody] AddBookCommand command)
         {
@@ -40,7 +41,7 @@ namespace LibraryAPI.Controllers
             }
         }
 
-        [HttpPost("UpdateBook")]
+        [HttpPost("update-book")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateBook([FromBody] UpdateBookCommand command)
         {
@@ -60,7 +61,27 @@ namespace LibraryAPI.Controllers
             }
         }
 
-        [HttpGet("Books")]
+        [HttpPost("add-image")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddImageToBook([FromBody] AddBookImageCommand command)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _mediator.Send(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("books")]
         public async Task<IActionResult> GetAllBooks()
         {
             try
@@ -77,7 +98,7 @@ namespace LibraryAPI.Controllers
             }
         }
 
-        [HttpGet("Book")]
+        [HttpGet("book")]
         public async Task<IActionResult> GetBookById([FromQuery] GetBookByIdQuery query)
         {
             try

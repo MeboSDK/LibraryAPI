@@ -20,7 +20,7 @@ namespace LibraryAPI.Controllers
             _logger = logger;
         }
 
-        [HttpPost("AddAuthor")]
+        [HttpPost("add-author")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAuthor([FromBody] AddAuthorCommand command)
         {
@@ -40,7 +40,7 @@ namespace LibraryAPI.Controllers
             }
         }
 
-        [HttpPost("UpdateAuthor")]
+        [HttpPost("update-author")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAuthor([FromBody] UpdateAuthorCommand command)
         {
@@ -60,7 +60,7 @@ namespace LibraryAPI.Controllers
             }
         }
 
-        [HttpGet("Authors")]
+        [HttpGet("authors")]
         public async Task<IActionResult> GetAllAuthors()
         {
             try
@@ -77,7 +77,7 @@ namespace LibraryAPI.Controllers
             }
         }
 
-        [HttpGet("Author")]
+        [HttpGet("author")]
         public async Task<IActionResult> GetAuthorById([FromQuery] GetAuthorByIdQuery query)
         {
             try
