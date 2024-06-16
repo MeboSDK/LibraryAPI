@@ -3,7 +3,6 @@ using Infrastructure;
 using Serilog;
 using Application;
 using Infrastructure.Data;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 

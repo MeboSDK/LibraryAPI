@@ -1,6 +1,6 @@
-﻿namespace Domain.Response;
+﻿namespace LibraryAPI.Models.ResponseModels;
 
-public class ApiResponse<T>
+public class ApiResponseModel<T>
 {
     public bool Success { get; set; }
     public T Data { get; set; }

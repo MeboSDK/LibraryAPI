@@ -1,7 +1,6 @@
-﻿using Application.Commands.BookC.Commands;
-using Application.Commands.UserC.Commands;
+﻿using Application.Commands.UserC.Commands;
 using Application.Queries.UserQ.Queries;
-using Domain.Response;
+using LibraryAPI.Models.ResponseModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +29,7 @@ namespace LibraryAPI.Controllers
             {
                 var token = await _mediator.Send(command);
 
-                return Ok(new ApiResponse<string>
+                return Ok(new ApiResponseModel<string>
                 {
                     Success = true,
                     Data = token
@@ -39,7 +38,7 @@ namespace LibraryAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return Unauthorized(new ApiResponse<string>
+                return Unauthorized(new ApiResponseModel<string>
                 {
                     Success = false,
                     ErrorMessage = ex.Message
@@ -54,7 +53,7 @@ namespace LibraryAPI.Controllers
             {
                 var token = await _mediator.Send(query);
 
-                return Ok(new ApiResponse<string>
+                return Ok(new ApiResponseModel<string>
                 {
                     Success = true,
                     Data = token
@@ -63,7 +62,7 @@ namespace LibraryAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return Unauthorized(new ApiResponse<string>
+                return Unauthorized(new ApiResponseModel<string>
                 {
                     Success = false,
                     ErrorMessage = ex.Message
